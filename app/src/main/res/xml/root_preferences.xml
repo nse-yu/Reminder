@@ -1,0 +1,64 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/account_header">
+
+        <SwitchPreferenceCompat
+            app:key="sync_cloud"
+            app:title="@string/account_cloud_title"
+            app:summaryOff="@string/account_summary_off"
+            app:summaryOn="@string/account_summary_on"/>
+
+        <SwitchPreferenceCompat
+            app:key="sync_ToDo"
+            app:title="@string/account_ToDo_title"
+            app:summaryOff="@string/account_summary_off"
+            app:summaryOn="@string/account_summary_on"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/preset_header">
+
+        <SwitchPreferenceCompat
+            app:key="date"
+            app:title="@string/preset_date_title" />
+
+        <SwitchPreferenceCompat
+            app:key="place"
+            app:title="@string/preset_place_title" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/general_header">
+
+        <SwitchPreferenceCompat
+            app:key="add"
+            app:title="@string/general_add_icons_title"
+            app:summary="@string/general_add_summary" />
+
+        <SwitchPreferenceCompat
+            app:key="reject"
+            app:title="@string/general_reject_title"
+            app:summary="@string/general_reject_summary"/>
+
+        <DropDownPreference
+            app:key="restore"
+            app:title="@string/general_restore_title"/>
+
+        <!--
+        <SwitchPreferenceCompat
+            app:dependency="sync"
+            app:key="attachment" />
+            -->
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="共有リマインダー">
+
+        <SwitchPreferenceCompat
+            app:key="notify"
+            app:title="@string/share_notify_title"
+            app:summary="@string/share_notify_summary"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

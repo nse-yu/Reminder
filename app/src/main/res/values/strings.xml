@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">Reminder</string>
+    <string name="menu_append">append</string>
+    <string name="menu_search">search</string>
+    <string name="menu_options">options</string>
+    <string name="title_activity_settings">リマインダー設定</string>
+
+    <!-- Preference header -->
+    <string name="account_header">クラウドアカウント</string>
+    <string name="preset_header">プリセット</string>
+    <string name="general_header">一般</string>
+
+    <!-- Account Preferences -->
+    <string name="account_cloud_title">Androidクラウドと同期</string>
+    <string name="account_ToDo_title">Microsoft To Doと同期</string>
+    <string name="account_summary_on">sample@gmail.com</string>
+    <string name="account_summary_off">自動同期OFF</string>
+
+    <!-- Preset Preferences -->
+    <string name="preset_date_title">日時</string>
+    <string name="preset_place_title">場所</string>
+
+    <!-- General Preferences -->
+    <string name="general_add_icons_title">リマインダーアイコンを追加</string>
+    <string name="general_add_summary">リマインダーアプリのアイコンをアプリ画面に追加します。</string>
+    <string name="general_reject_title">拒否した着信を通知</string>
+    <string name="general_reject_summary">着信を拒否してメッセージを送信すると、自動的にリマインダーが作成されます。</string>
+    <string name="general_restore_title">標準保存先</string>
+    <string name="share_notify_title">通知</string>
+    <string name="share_notify_summary">他のメンバーがリマインダーを追加または完了すると、通知を受信します。</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="tab_all">全て</string>
+    <string name="tab_reminder">リマインダー</string>
+    <string name="tab_todo">To Do</string>
+    <string name="menu_edit">編集</string>
+    <string name="menu_arrange">並び替え</string>
+    <string name="menu_complete">完了済み</string>
+    <string name="menu_share">共有リマインダー</string>
+    <string name="topic_nothing">No topic</string>
+    <string name="summary_nothing">No summary</string>
+    <string name="hint_topic">タイトル</string>
+    <string name="hint_summary">メモ</string>
+    <string name="switch_date">日時</string>
+    <string name="switch_place">場所</string>
+    <string name="text_restore">保存先</string>
+    <string name="button_cancel">キャンセル</string>
+    <string name="button_save">保存</string>
+    <string name="toast_please_input">フィールドを入力してください</string>
+</resources>
