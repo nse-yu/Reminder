@@ -44,13 +44,8 @@ public class NewMemoActivity extends AppCompatActivity implements View.OnClickLi
             save_button.setClickable(false);
         }
 
-        //whether to set the text on EditText or not based on the action "update"
-        if (getIntent().getExtras() != null &&
-                getIntent().getExtras().containsKey(DetailActivity.EDIT_UPDATE)) {
-            String[] edit_text = getIntent().getStringArrayExtra(DetailActivity.EDIT_UPDATE);
-            edit_topic.setText(edit_text[0]);
-            edit_summary.setText(edit_text[1]);
-        }
+        //edittext
+        prepareEditText();
     }
 
     @Override
@@ -100,5 +95,19 @@ public class NewMemoActivity extends AppCompatActivity implements View.OnClickLi
             save_button.setTextColor(getResources().getColor(R.color.mediumslateblue));
             save_button.setClickable(true);
         }
+    }
+
+    private void prepareEditText(){
+        //whether to set the text on EditText or not based on the action "update"
+        if (getIntent().getExtras() != null &&
+                getIntent().getExtras().containsKey(DetailActivity.EDIT_UPDATE)) {
+            String[] edit_text = getIntent().getStringArrayExtra(DetailActivity.EDIT_UPDATE);
+            edit_topic.setText(edit_text[0]);
+            edit_summary.setText(edit_text[1]);
+        }
+
+        //focus on the edit text right end
+        edit_topic.setSelection(edit_topic.getText().toString().length());
+        edit_topic.requestFocus();
     }
 }

@@ -29,6 +29,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
 
     //constructor
     public MemoAdapter(Context context){
+        Log.d("CREATE ADAPTER","C R E A T E A D A P T E R");
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -72,9 +73,6 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
         return memos.get(position);
     }
 
-    public void setOnItemClickListener(ClickListener listener){
-        clickListener = listener;
-    }
     public void setOnCheckedListener(ClickListener listener){clickListener = listener;}
 
     public static class MemoViewHolder extends RecyclerView.ViewHolder

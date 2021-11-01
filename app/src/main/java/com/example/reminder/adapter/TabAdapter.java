@@ -1,5 +1,7 @@
 package com.example.reminder.adapter;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -29,6 +31,8 @@ public class TabAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Log.d("CREATE FRAGMENT","C R E A T E F R A G M E N T");
+
         if(position == 0)
             return new AllFragment();
         else if(position == 1)

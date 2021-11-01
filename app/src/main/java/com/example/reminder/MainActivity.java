@@ -116,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
+            Log.d("ON TAB SELECTED","O N T A B S E L E C T E D");
+
             //多分この後にcreateFragmentがadapterで呼び出される
             viewPager.setCurrentItem(tab.getPosition());
         }
