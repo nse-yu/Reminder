@@ -4,11 +4,11 @@
     <style name="button_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:backgroundTint">@color/white</item>
         <item name="android:layout_weight">0.5</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/mediumslateblue</item>
+        <item name="background">@drawable/ripple_effect</item>
     </style>
 
     <style name="switch_style">
@@ -18,5 +18,20 @@
         <item name="android:padding">20sp</item>
         <item name="android:textSize">18sp</item>
         <item name="android:background">@drawable/box_frame</item>
+    </style>
+
+    <style name="edit_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#00000000</item>
+    </style>
+
+    <style name="detail_button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/dim_gray</item>
+        <item name="android:background">@drawable/ripple_effect</item>
     </style>
 </resources>

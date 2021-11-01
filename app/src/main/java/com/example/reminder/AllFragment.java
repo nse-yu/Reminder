@@ -21,6 +21,9 @@ import com.example.reminder.database.room.Memo;
 
 public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
     private static MemoAdapter memo_adapter;
+    public static final String TOPIC_STRING = "TOPIC";
+    public static final String SUMMARY_STRING = "SUMMARY";
+    public static final String ID_INT = "ID";
 
     public AllFragment() {
         // Required empty public constructor
@@ -63,6 +66,13 @@ public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
         Log.d("ON ITEM CLICK", "O N I T E M C L I C K");
 
         Intent det_intent = new Intent(getContext(),DetailActivity.class);
+        //get a clicked memo
+        Memo clicked_memo = memo_adapter.getMemoAtPosition(position);
+        //put some arguments
+        det_intent.putExtra(TOPIC_STRING,clicked_memo.getTopic());
+        det_intent.putExtra(SUMMARY_STRING,clicked_memo.getSummary());
+        det_intent.putExtra(ID_INT,clicked_memo.getId());
+        //start
         startActivity(det_intent);
     }
 

@@ -37,11 +37,17 @@ public class NewMemoActivity extends AppCompatActivity implements View.OnClickLi
         binding.cancel.setOnClickListener(this);
         edit_topic.addTextChangedListener(this);
 
-        //onCreate時にはedit_topicは空確定なので、ボタンを無効にする
+        //onCreate時にはedit_topicはほぼ空確定なので、ボタンを無効にする
         if(TextUtils.isEmpty(edit_topic.getText().toString())) {
             Button save_button = binding.save;
             save_button.setTextColor(getResources().getColor(R.color.mediumslateblue_dark));
             save_button.setClickable(false);
+        }
+
+        if(getIntent().getExtras().containsKey(DetailActivity.EDIT_UPDATE)){
+            String[] edit_text = getIntent().getStringArrayExtra(DetailActivity.EDIT_UPDATE);
+            edit_topic.setText(edit_text[0]);
+            edit_summary.setText(edit_text[1]);
         }
     }
 

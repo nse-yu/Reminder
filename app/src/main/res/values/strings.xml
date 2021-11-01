@@ -47,4 +47,7 @@
     <string name="button_cancel">キャンセル</string>
     <string name="button_save">保存</string>
     <string name="toast_please_input">フィールドを入力してください</string>
+    <string name="button_complete">完了</string>
+    <string name="button_edit">編集</string>
+    <string name="button_delete">削除</string>
 </resources>

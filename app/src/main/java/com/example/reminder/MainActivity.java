@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.reminder.adapter.MemoAdapter;
 import com.example.reminder.adapter.TabAdapter;
@@ -24,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ViewPager2 viewPager;
     private static MemoViewModel viewModel;
-    public static final String UPDATE = "update";
-    public static final int REQUEST_UPDATE = 10;
     public static final int REQUEST_INSERT = 1;
 
     @Override
@@ -110,8 +107,6 @@ public class MainActivity extends AppCompatActivity {
                 Memo memo = new Memo(content[0], content[1]);
                 viewModel.insert(memo);
             }
-        }else if(requestCode == REQUEST_UPDATE && resultCode == RESULT_OK){
-            //updateには主キーの断定が必須
         }else{
             Log.d("RESULT CANCELED","R E S U L T C A N C E L E D");
         }
