@@ -54,7 +54,6 @@
             style="@style/detail_button_style"
             android:drawableTop="@drawable/ic_checked"
             android:text="@string/button_complete" />
-
         <Button
             android:id="@+id/edit"
             android:text="@string/button_edit"

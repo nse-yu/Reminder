@@ -44,7 +44,9 @@ public class NewMemoActivity extends AppCompatActivity implements View.OnClickLi
             save_button.setClickable(false);
         }
 
-        if(getIntent().getExtras().containsKey(DetailActivity.EDIT_UPDATE)){
+        //whether to set the text on EditText or not based on the action "update"
+        if (getIntent().getExtras() != null &&
+                getIntent().getExtras().containsKey(DetailActivity.EDIT_UPDATE)) {
             String[] edit_text = getIntent().getStringArrayExtra(DetailActivity.EDIT_UPDATE);
             edit_topic.setText(edit_text[0]);
             edit_summary.setText(edit_text[1]);

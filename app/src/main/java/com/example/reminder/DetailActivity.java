@@ -1,8 +1,10 @@
 package com.example.reminder;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,7 +14,8 @@ import com.example.reminder.database.MemoViewModel;
 import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityDetailBinding;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivity extends AppCompatActivity
+        implements View.OnClickListener, DialogInterface.OnClickListener {
     //memo's contents id is essential to update specific memo
     private String memo_topic;
     private String memo_summary;
@@ -39,14 +42,28 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         //listener
         binding.edit.setOnClickListener(this);
+        binding.delete.setOnClickListener(this);
     }
 
     //called to update one memo's contents
     @Override
     public void onClick(View view) {
-        Intent update_intent = new Intent(this,NewMemoActivity.class);
-        update_intent.putExtra(EDIT_UPDATE,new String[]{memo_topic,memo_summary});
-        startActivityForResult(update_intent,REQUEST_UPDATE);
+        int id = view.getId();
+        if(id == R.id.edit) {
+            //appendボタン（+）の使いまわしActivityを使う
+            Intent update_intent = new Intent(this, NewMemoActivity.class);
+            update_intent.putExtra(EDIT_UPDATE, new String[]{memo_topic, memo_summary});
+            startActivityForResult(update_intent, REQUEST_UPDATE);
+        }else if(id == R.id.delete){
+            //to show alert
+            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+            alertBuilder.setTitle(R.string.alert_delete);
+            //listener
+            alertBuilder.setPositiveButton(R.string.button_delete,this);
+            alertBuilder.setNegativeButton(R.string.button_cancel,this);
+            //show the alert
+            alertBuilder.show();
+        }
     }
 
     @Override
@@ -61,11 +78,30 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Memo memo = new Memo(memo_id,memo_txt[0],memo_txt[1]);
                 viewModel.update(memo);
 
-                Intent return_intent = new Intent(this,MainActivity.class);
-                startActivity(return_intent);
+                //return to main activity
+                returnMain();
             }
         }else{
             Log.d("RESULT FAILED","R E S U L T F A I L E D");
         }
+    }
+
+    @Override
+    public void onClick(DialogInterface dialogInterface, int i) {
+        if(i == DialogInterface.BUTTON_POSITIVE) {
+            //delete memo
+            MemoViewModel viewModel = MainActivity.getMemoViewModel();
+            Memo delete_memo = new Memo(memo_id, memo_topic, memo_summary);
+            viewModel.delete(delete_memo);
+
+            //return to main activity
+            returnMain();
+        }
+    }
+
+    public void returnMain(){
+        //return to MainActivity
+        Intent return_intent = new Intent(this,MainActivity.class);
+        startActivity(return_intent);
     }
 }
