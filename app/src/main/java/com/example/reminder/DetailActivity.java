@@ -7,26 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.example.reminder.database.MemoViewModel;
 import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityDetailBinding;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
-    private ActivityDetailBinding binding;
-
+    //memo's contents id is essential to update specific memo
     private String memo_topic;
     private String memo_summary;
     private int memo_id;
 
+    //public opened KEY CODE to open the intent
     private final static int REQUEST_UPDATE = 2;
     public final static String EDIT_UPDATE = "update";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityDetailBinding.inflate(getLayoutInflater());
+        com.example.reminder.databinding.ActivityDetailBinding binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         //initialize
@@ -56,10 +55,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         if(requestCode == REQUEST_UPDATE && resultCode == RESULT_OK){
             MemoViewModel viewModel = MainActivity.getMemoViewModel();
-            String[] memo_txt = new String[0];
 
             if (data != null) {
-                memo_txt = data.getStringArrayExtra(NewMemoActivity.EDIT_REPLY);
+                String[] memo_txt = data.getStringArrayExtra(NewMemoActivity.EDIT_REPLY);
                 Memo memo = new Memo(memo_id,memo_txt[0],memo_txt[1]);
                 viewModel.update(memo);
 
