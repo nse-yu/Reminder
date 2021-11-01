@@ -45,7 +45,7 @@ public class DetailActivity extends AppCompatActivity
         binding.delete.setOnClickListener(this);
     }
 
-    //called to update one memo's contents
+    //onclick for update one memo's contents
     @Override
     public void onClick(View view) {
         int id = view.getId();
@@ -86,6 +86,7 @@ public class DetailActivity extends AppCompatActivity
         }
     }
 
+    //onclick for alert and delete
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
         if(i == DialogInterface.BUTTON_POSITIVE) {

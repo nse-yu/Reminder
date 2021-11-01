@@ -100,8 +100,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        //only insert query
         if(requestCode == REQUEST_INSERT && resultCode == RESULT_OK){
-
+            //data is not null
             if (data != null) {
                 String[] content = data.getStringArrayExtra(NewMemoActivity.EDIT_REPLY);
                 Memo memo = new Memo(content[0], content[1]);

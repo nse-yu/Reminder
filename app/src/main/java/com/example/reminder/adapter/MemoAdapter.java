@@ -16,6 +16,7 @@ import com.example.reminder.R;
 import com.example.reminder.database.room.Memo;
 
 import java.util.List;
+import java.lang.String;
 
 public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder> {
     public interface ClickListener{
@@ -47,9 +48,19 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
         Log.d("ON BIND VIEW HOLDER","O N B I N D V I E W H O L D E R");
 
         if(memos != null){
+            //get memo
             Memo current = memos.get(position);
+
+            //restrict summary length to show in the recycler view holder
+            String sub_summary;
+            if(current.getSummary().length() > 40)
+                sub_summary = current.getSummary().substring(0,35) + "...";
+            else
+                sub_summary = current.getSummary();
+
+            //set text to textview in recyclerview
             holder.text_topic.setText(current.getTopic());
-            holder.text_summary.setText(current.getSummary());
+            holder.text_summary.setText(sub_summary);
         }else{
             holder.text_topic.setText(R.string.topic_nothing);
             holder.text_summary.setText(R.string.summary_nothing);
