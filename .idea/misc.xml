@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/drawable/box_frame.xml" value="0.17407407407407408" />
+        <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/drawable/button_frame.xml" value="0.16197916666666667" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/drawable/ic_launcher_background.xml" value="0.10185185185185185" />
+        <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/activity_detail.xml" value="0.13958333333333334" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/activity_new_memo.xml" value="0.1" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/fragment_all.xml" value="0.1" />
@@ -12,6 +14,7 @@
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/fragment_reminder.xml" value="0.1" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/fragment_todo.xml" value="0.1796875" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/recyclerview_items.xml" value="0.1" />
+        <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/save_location.xml" value="0.13125" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/layout/settings_activity.xml" value="0.1" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/menu/menu_main.xml" value="0.1796875" />
         <entry key="..\:/Users/81802/AndroidStudioProjects/Reminder/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.11197916666666667" />

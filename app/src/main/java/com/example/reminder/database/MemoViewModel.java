@@ -27,6 +27,6 @@ public class MemoViewModel extends AndroidViewModel {
     //this is the root SQL query
     public void insert(Memo memo){repository.insert(memo);}
     public void update(Memo memo){repository.update(memo);}
-    public void delete(Memo memo){repository.update(memo);}
+    public void delete(Memo memo){repository.delete(memo);}
     public void deleteAll(){repository.deleteAll();}
 }

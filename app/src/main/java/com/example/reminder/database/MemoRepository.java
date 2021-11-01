@@ -12,8 +12,8 @@ import com.example.reminder.database.room.MemoDatabase;
 import java.util.List;
 
 public class MemoRepository {
-    private MemoDao dao;
-    private LiveData<List<Memo>> memo_list;
+    private final MemoDao dao;
+    private final LiveData<List<Memo>> memo_list;
 
     public MemoRepository(Application application){
         //create and initialize database refer to the builder
@@ -42,7 +42,7 @@ public class MemoRepository {
 
     private static class insertAsyncTask extends AsyncTask<Memo,Void,Void>{
         //field
-        private MemoDao dao;
+        private final MemoDao dao;
         //constructor
         public insertAsyncTask(MemoDao dao){this.dao = dao;}
 
@@ -54,7 +54,7 @@ public class MemoRepository {
     }
     private static class updateAsyncTask extends AsyncTask<Memo,Void,Void>{
         //field
-        private MemoDao dao;
+        private final MemoDao dao;
         //constructor
         public updateAsyncTask(MemoDao dao){this.dao = dao;}
 
@@ -66,7 +66,7 @@ public class MemoRepository {
     }
     private static class deleteAsyncTask extends AsyncTask<Memo,Void,Void>{
         //field
-        private MemoDao dao;
+        private final MemoDao dao;
         //constructor
         public deleteAsyncTask(MemoDao dao){this.dao = dao;}
 
@@ -78,7 +78,7 @@ public class MemoRepository {
     }
     private static class deleteAllAsyncTask extends AsyncTask<Void,Void,Void>{
         //field
-        private MemoDao dao;
+        private final MemoDao dao;
         //constructor
         public deleteAllAsyncTask(MemoDao dao){this.dao = dao;}
 

@@ -3,10 +3,7 @@ package com.example.reminder;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
@@ -15,7 +12,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.reminder.adapter.MemoAdapter;
 import com.example.reminder.adapter.TabAdapter;
@@ -24,12 +20,10 @@ import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity implements MemoAdapter.ClickListener{
+public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ViewPager2 viewPager;
-    private MemoViewModel viewModel;
+    private static MemoViewModel viewModel;
     public static final String UPDATE = "update";
     public static final int REQUEST_UPDATE = 10;
     public static final int REQUEST_INSERT = 1;
@@ -47,9 +41,14 @@ public class MainActivity extends AppCompatActivity implements MemoAdapter.Click
         viewModel = ViewModelProvider.AndroidViewModelFactory
                 .getInstance(getApplication())
                 .create(MemoViewModel.class);
-        //initialize two adapters
+
+        //initialize adapter
         TabAdapter tab_adapter = new TabAdapter(getSupportFragmentManager(),getLifecycle(),
                 tabLayout.getTabCount());
+
+        //restrict swiping
+        viewPager.setUserInputEnabled(false);
+
         //Set a new adapter to provide page views on demand.
         viewPager.setAdapter(tab_adapter);
 
@@ -57,13 +56,12 @@ public class MainActivity extends AppCompatActivity implements MemoAdapter.Click
         tabLayout.addOnTabSelectedListener(new TabListenerClass());
 
         //set the observer
-        viewModel.selectAll().observe(this, new Observer<List<Memo>>() {
-            @Override
-            public void onChanged(List<Memo> memos) {
-                MemoAdapter memoAdapter = AllFragment.getMemoAdapter();
-                if(memos != null)
-                    memoAdapter.setMemos(memos);
-            }
+        viewModel.selectAll().observe(this, memos -> {
+            Log.d("OBSERVE CHANGED","O B S E R V E C H A N G E D");
+
+            MemoAdapter memoAdapter = AllFragment.getMemoAdapter();
+            if(memos != null)
+                memoAdapter.setMemos(memos);
         });
     }
 
@@ -75,6 +73,10 @@ public class MainActivity extends AppCompatActivity implements MemoAdapter.Click
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_todo)));
 
         return tabLayout;
+    }
+
+    public static MemoViewModel getMemoViewModel(){
+        return viewModel;
     }
 
     @Override
@@ -111,13 +113,8 @@ public class MainActivity extends AppCompatActivity implements MemoAdapter.Click
         }else if(requestCode == REQUEST_UPDATE && resultCode == RESULT_OK){
             //updateには主キーの断定が必須
         }else{
-            Log.d("ERROR_RESULT","result bad");
+            Log.d("RESULT CANCELED","R E S U L T C A N C E L E D");
         }
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        //start new activity to show a memo
     }
 
     private class TabListenerClass implements TabLayout.OnTabSelectedListener{

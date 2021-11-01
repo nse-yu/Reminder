@@ -2,7 +2,7 @@
     <string name="app_name">Reminder</string>
     <string name="menu_append">append</string>
     <string name="menu_search">search</string>
-    <string name="menu_options">options</string>
+    <string name="menu_options">設定</string>
     <string name="title_activity_settings">リマインダー設定</string>
 
     <!-- Preference header -->

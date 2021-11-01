@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,6 +20,7 @@ import java.util.List;
 public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder> {
     public interface ClickListener{
         void onItemClick(View view,int position);
+        void onChecked(View view,int position,boolean isChecked);
     }
     //field
     private List<Memo> memos;
@@ -32,6 +35,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
     @NonNull
     @Override
     public MemoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("ON CREATE VIEW HOLDER","O N C R E A T E V I E W H O L D E R");
 
         View itemView = inflater.inflate(R.layout.recyclerview_items,parent,false);
         return new MemoViewHolder(itemView);
@@ -39,6 +43,7 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MemoViewHolder holder, int position) {
+        Log.d("ON BIND VIEW HOLDER","O N B I N D V I E W H O L D E R");
 
         if(memos != null){
             Memo current = memos.get(position);
@@ -63,11 +68,17 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
         return 0;
     }
 
+    public Memo getMemoAtPosition(int position){
+        return memos.get(position);
+    }
+
     public void setOnItemClickListener(ClickListener listener){
         clickListener = listener;
     }
+    public void setOnCheckedListener(ClickListener listener){clickListener = listener;}
 
-    public static class MemoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class MemoViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         private final TextView text_topic;
         private final TextView text_summary;
 
@@ -75,12 +86,25 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
             super(itemView);
             text_topic = itemView.findViewById(R.id.text_topic);
             text_summary = itemView.findViewById(R.id.text_summary);
+            CheckBox checkBox = itemView.findViewById(R.id.checkbox);
+
+            //set the listener
             itemView.setOnClickListener(this);
+            checkBox.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View view) {
+            Log.d("ON CLICK","O N C L I C K");
+
             clickListener.onItemClick(view,getAdapterPosition());
+        }
+
+        @Override
+        public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            Log.d("ON CHECKED CHANGE","O N C H E C K E D C H A N G E");
+
+            clickListener.onChecked(compoundButton, getAdapterPosition(),b);
         }
     }
 }
