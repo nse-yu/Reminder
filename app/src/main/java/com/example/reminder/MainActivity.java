@@ -35,10 +35,7 @@ public class MainActivity extends AppCompatActivity {
         //initialize
         viewPager = binding.viewpager;
         TabLayout tabLayout = setTabLayout();
-        viewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication())
-                .create(MemoViewModel.class);
-
+        
         //initialize adapter
         TabAdapter tab_adapter = new TabAdapter(getSupportFragmentManager(),getLifecycle(),
                 tabLayout.getTabCount());
@@ -51,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
         //listener
         tabLayout.addOnTabSelectedListener(new TabListenerClass());
+        
+        //create a ViewModel
+        viewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication())
+                .create(MemoViewModel.class);
 
         //set the observer
         viewModel.selectAll().observe(this, memos -> {
