@@ -41,20 +41,21 @@ public class DetailActivity extends AppCompatActivity
         binding.showSummary.setText(memo_summary);
 
         //listener
-        binding.edit.setOnClickListener(this);
-        binding.delete.setOnClickListener(this);
+        binding.buttonEdit.setOnClickListener(this);
+        binding.buttonDelete.setOnClickListener(this);
+        binding.buttonComplete.setOnClickListener(this);
     }
 
     //onclick for update one memo's contents
     @Override
     public void onClick(View view) {
         int id = view.getId();
-        if(id == R.id.edit) {
+        if(id == R.id.button_edit) {
             //appendボタン（+）の使いまわしActivityを使う
             Intent update_intent = new Intent(this, NewMemoActivity.class);
             update_intent.putExtra(EDIT_UPDATE, new String[]{memo_topic, memo_summary});
             startActivityForResult(update_intent, REQUEST_UPDATE);
-        }else if(id == R.id.delete){
+        }else if(id == R.id.button_delete){
             //to show alert
             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
             alertBuilder.setTitle(R.string.alert_delete);
@@ -63,6 +64,15 @@ public class DetailActivity extends AppCompatActivity
             alertBuilder.setNegativeButton(R.string.button_cancel,this);
             //show the alert
             alertBuilder.show();
+        }else if(id == R.id.button_complete){
+            MemoViewModel viewModel = MainActivity.getMemoViewModel();
+            //delete->同じMemoにcompleted属性をつけて再構成
+            Memo completed_memo = new Memo(memo_id, memo_topic, memo_summary);
+            viewModel.delete(completed_memo);
+            completed_memo.setCompleted(true);
+            viewModel.insert(completed_memo);
+
+            returnMain();
         }
     }
 

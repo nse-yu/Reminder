@@ -17,19 +17,26 @@ import com.example.reminder.adapter.TabAdapter;
 import com.example.reminder.database.MemoViewModel;
 import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityMainBinding;
+import com.example.reminder.menu.completed.CompletedActivity;
+import com.example.reminder.menu.SettingsActivity;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private ViewPager2 viewPager;
     private static MemoViewModel viewModel;
     public static final int REQUEST_INSERT = 1;
+    public static final String COMPLETED_COUNT = "COMPLETED";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        binding.toolbar.setTitle(R.string.app_all);
         setSupportActionBar(binding.toolbar);
 
         //initialize
@@ -56,11 +63,19 @@ public class MainActivity extends AppCompatActivity {
 
         //set the observer
         viewModel.selectAll().observe(this, memos -> {
-            Log.d("OBSERVE CHANGED","O B S E R V E C H A N G E D");
+            Log.d("OBSERVE CHANGED", "MAIN O B S E R V E C H A N G E D count = " + memos.size());
 
             MemoAdapter memoAdapter = AllFragment.getMemoAdapter();
-            if(memos != null)
-                memoAdapter.setMemos(memos);
+            List<Memo> new_list = new ArrayList<>();
+
+            /*isCompletedによって、完了リストへ移動するものとそうでないものをわける
+            * データベース上はどちらも存在するが、recyclerview上ではnot completedのみ表示*/
+            for(int i = 0;i < memos.size();i++){
+                if(!(memos.get(i).isCompleted()))
+                    new_list.add(memos.get(i));
+            }
+            //adapt the new list of memo that excludes the completed memo
+            memoAdapter.setMemos(new_list);
         });
     }
 
@@ -88,12 +103,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         final int itemID = item.getItemId();
 
-        if(itemID == R.id.options){
-            Intent options_intent = new Intent(this,SettingsActivity.class);
+        if(itemID == R.id.menu_options){
+            Intent options_intent = new Intent(this, SettingsActivity.class);
             startActivity(options_intent);
-        }else if(itemID == R.id.append){
+        }else if(itemID == R.id.menu_append){
             Intent append_intent = new Intent(this,NewMemoActivity.class);
             startActivityForResult(append_intent,REQUEST_INSERT);
+        }else if(itemID == R.id.menu_complete){
+            Intent completed_intent = new Intent(this, CompletedActivity.class);
+            startActivity(completed_intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -102,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //only insert query
+        //only insert query and if the action is "insert", should put third argument "false"
         if(requestCode == REQUEST_INSERT && resultCode == RESULT_OK){
             //data is not null
             if (data != null) {
                 String[] content = data.getStringArrayExtra(NewMemoActivity.EDIT_REPLY);
-                Memo memo = new Memo(content[0], content[1]);
+                Memo memo = new Memo(content[0], content[1],false);
                 viewModel.insert(memo);
             }
         }else{
@@ -119,10 +137,17 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            Log.d("ON TAB SELECTED","O N T A B S E L E C T E D");
+            Log.d("ON TAB SELECTED","O N T A B S E L E C T E D"+tab.getPosition());
 
+            int position = tab.getPosition();
+            if(position == 0)
+                binding.toolbar.setTitle(R.string.app_all);
+            else if(position == 1)
+                binding.toolbar.setTitle(R.string.app_reminder);
+            else
+                binding.toolbar.setTitle(R.string.app_todo);
             //多分この後にcreateFragmentがadapterで呼び出される
-            viewPager.setCurrentItem(tab.getPosition());
+            viewPager.setCurrentItem(position);
         }
 
         @Override

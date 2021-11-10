@@ -50,17 +50,17 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/complete"
+            android:id="@+id/button_complete"
             style="@style/detail_button_style"
             android:drawableTop="@drawable/ic_checked"
             android:text="@string/button_complete" />
         <Button
-            android:id="@+id/edit"
+            android:id="@+id/button_edit"
             android:text="@string/button_edit"
             style="@style/detail_button_style"
             android:drawableTop="@drawable/ic_pencil"/>
         <Button
-            android:id="@+id/delete"
+            android:id="@+id/button_delete"
             android:text="@string/button_delete"
             style="@style/detail_button_style"
             android:drawableTop="@drawable/ic_deleted"/>

@@ -20,9 +20,11 @@ public interface MemoDao {
     void update(Memo... memos);
 
     @Query("SELECT * FROM table_memo ORDER BY id")
-    public LiveData<List<Memo>> selectAll();
+    LiveData<List<Memo>> selectAll();
     @Query("SELECT * FROM table_memo LIMIT 1")
     Memo[] selectMemo();
     @Query("DELETE FROM table_memo")
     void deleteAll();
+    @Query("SELECT count(*) FROM table_memo WHERE completed = 1")
+    int countCompleted();
 }

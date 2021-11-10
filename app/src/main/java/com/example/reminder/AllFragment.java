@@ -57,6 +57,8 @@ public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
         memo_adapter.setOnCheckedListener(this);
     }
 
+    /**This method is used to give a MemoAdapter instance to an activity of the outside
+     * */
     public static MemoAdapter getMemoAdapter(){
         return memo_adapter;
     }
@@ -83,7 +85,9 @@ public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
 
             Memo memo = memo_adapter.getMemoAtPosition(position);
             MemoViewModel viewModel = MainActivity.getMemoViewModel();
-            viewModel.delete(memo);
+            //when checked the box, it is updated to add new value of completed
+            memo.setCompleted(true);
+            viewModel.update(memo);
         }
     }
 }

@@ -1,19 +1,19 @@
 package com.example.reminder.database;
 
+import android.app.Activity;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.example.reminder.database.room.Memo;
 
 import java.util.List;
 
 public class MemoViewModel extends AndroidViewModel {
-    private MemoRepository repository;
-    private LiveData<List<Memo>> memo_list;
+    private final MemoRepository repository;
+    private final LiveData<List<Memo>> memo_list;
 
     public MemoViewModel(@NonNull Application application) {
         super(application);
@@ -29,4 +29,5 @@ public class MemoViewModel extends AndroidViewModel {
     public void update(Memo memo){repository.update(memo);}
     public void delete(Memo memo){repository.delete(memo);}
     public void deleteAll(){repository.deleteAll();}
+    public void countCompleted(Activity activity){repository.countCompleted(activity);}
 }
