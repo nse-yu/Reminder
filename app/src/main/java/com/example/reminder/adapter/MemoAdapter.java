@@ -120,27 +120,9 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
     }
 
     @Override
-    public boolean onFailedToRecycleView(@NonNull MemoViewHolder holder) {
-        Log.d("ON FAILED TO","O N F A I L E D T O");
-        return super.onFailedToRecycleView(holder);
-    }
-
-    @Override
-    public void onDetachedFromRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onDetachedFromRecyclerView(recyclerView);
-        Log.d("ON DETACHED","O N D E T A C H E D");
-    }
-
-    @Override
     public void onViewRecycled(@NonNull MemoViewHolder holder) {
         super.onViewRecycled(holder);
         Log.d("ON VIEW RECYCLED","O N V I E W R E C Y C L E D");
-    }
-
-    @Override
-    public void unregisterAdapterDataObserver(@NonNull RecyclerView.AdapterDataObserver observer) {
-        super.unregisterAdapterDataObserver(observer);
-        Log.d("UNREGISTER","U N R E G I S T E R");
     }
 
     @Override
@@ -153,11 +135,5 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
     public void onViewAttachedToWindow(@NonNull MemoViewHolder holder) {
         super.onViewAttachedToWindow(holder);
         Log.d("ON VIEW ATTACHED","O N V I E W A T T A C H E D");
-    }
-
-    @Override
-    public void setHasStableIds(boolean hasStableIds) {
-        super.setHasStableIds(hasStableIds);
-        Log.d("SET HAS STABLE IDS","S T A B L E I D S");
     }
 }

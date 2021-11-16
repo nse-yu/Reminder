@@ -52,23 +52,27 @@ public class CompletedReminderActivity extends AppCompatActivity implements
         //initialize
         RecyclerView recyclerView = binding.recyclerview;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        viewModel = MainActivity.getMemoViewModel();
-        adapter = AllFragment.getMemoAdapter();
+        viewModel = ViewModelProvider.AndroidViewModelFactory
+                .getInstance(getApplication())
+                .create(MemoViewModel.class);
+        adapter = new MemoAdapter(this);
         recyclerView.setAdapter(adapter);
 
         //listener
         adapter.setOnCheckedListener(this);
 
         viewModel.selectAll().observe(this, memos -> {
-            Log.d("OBSERVE CHANGED", "COMPLETED O B S E R V E C H A N G E D count = " + memos.size());
+            Log.d("OBSERVE CHANGED", "COMPLETED O B S E R V E C H A N G E D sum = " + memos.size());
 
             List<Memo> new_list = new ArrayList<>();
 
             /*isCompletedによって、完了リストへ移動するものとそうでないものをわける
              * データベース上はどちらも存在するが、recyclerview上ではnot completedのみ表示*/
             for(int i = 0;i < memos.size();i++){
-                if(memos.get(i).isCompleted())
+                if(memos.get(i).isCompleted()) {
+                    Log.d("CHECKED","C H E C K E D : "+i);
                     new_list.add(memos.get(i));
+                }
             }
             //adapt the new list of memo that excludes the completed memo
             adapter.setMemos(new_list);
@@ -77,7 +81,7 @@ public class CompletedReminderActivity extends AppCompatActivity implements
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.d("ON ITEM CLICK", "O N I T E M C L I C K");
+        Log.d("CMP: ON ITEM CLICK", "O N I T E M C L I C K : position = "+position);
 
         Intent det_intent = new Intent(this, DetailActivity.class);
         //get a clicked memo
@@ -95,10 +99,12 @@ public class CompletedReminderActivity extends AppCompatActivity implements
         if(isChecked) {
             Log.d("IS CHECKED == FALSE", "I S C H E C K E D = = T R U E");
 
+            /*
             Memo memo = adapter.getMemoAtPosition(position);
             //when checked the box, it is updated to add new value of completed
             memo.setCompleted(false);
             viewModel.update(memo);
+             */
         }
     }
 }

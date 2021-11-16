@@ -29,10 +29,11 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private static MemoViewModel viewModel;
     public static final int REQUEST_INSERT = 1;
-    public static final String COMPLETED_COUNT = "COMPLETED";
+    private List<Memo> new_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ON CREATE","O N C R E A T E");
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -63,16 +64,18 @@ public class MainActivity extends AppCompatActivity {
 
         //set the observer
         viewModel.selectAll().observe(this, memos -> {
-            Log.d("OBSERVE CHANGED", "MAIN O B S E R V E C H A N G E D count = " + memos.size());
+            Log.d("OBSERVE CHANGED", "MAIN O B S E R V E C H A N G E D sum = " + memos.size());
 
             MemoAdapter memoAdapter = AllFragment.getMemoAdapter();
-            List<Memo> new_list = new ArrayList<>();
+            new_list = new ArrayList<>();
 
             /*isCompletedによって、完了リストへ移動するものとそうでないものをわける
             * データベース上はどちらも存在するが、recyclerview上ではnot completedのみ表示*/
             for(int i = 0;i < memos.size();i++){
-                if(!(memos.get(i).isCompleted()))
+                if(!(memos.get(i).isCompleted())) {
+                    Log.d("NOT CHECKED","U N C H E C K E D : "+i);
                     new_list.add(memos.get(i));
+                }
             }
             //adapt the new list of memo that excludes the completed memo
             memoAdapter.setMemos(new_list);
@@ -159,5 +162,29 @@ public class MainActivity extends AppCompatActivity {
         public void onTabReselected(TabLayout.Tab tab) {
 
         }
+    }
+
+    /**In this method, adapter will bind a new_list to ViewHolder.
+     * ※A new_list is the previous list preserved in this activity's active state*/
+    @Override
+    protected void onResume() {
+        Log.d("ON RESUME","O N R E S U M E");
+        super.onResume();
+
+        MemoAdapter memoAdapter;
+        if((memoAdapter = AllFragment.getMemoAdapter()) != null)
+            memoAdapter.setMemos(new_list);
+    }
+
+    @Override
+    protected void onStop() {
+        Log.d("ON STOP","O N S T O P");
+        super.onStop();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d("ON PAUSE","O N P A U S E");
+        super.onPause();
     }
 }

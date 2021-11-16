@@ -3,6 +3,7 @@ package com.example.reminder.database;
 import android.app.Activity;
 import android.app.Application;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.lifecycle.LiveData;
@@ -65,6 +66,7 @@ public class MemoRepository {
 
         @Override
         protected Void doInBackground(Memo... memos) {
+            Log.d("UPDATE IN BACKGROUND","U P D A T E");
             dao.update(memos[0]);
             return null;
         }
