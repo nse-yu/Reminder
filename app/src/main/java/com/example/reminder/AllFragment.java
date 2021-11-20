@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.reminder.adapter.MemoAdapter;
@@ -84,6 +85,7 @@ public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
     public void onChecked(View view, int position, boolean isChecked) {
         if(isChecked) {
             Log.d("IS CHECKED == TRUE", "I S C H E C K E D = = T R U E : position = "+position);
+            Toast.makeText(getActivity(), "リマインダーを完了しました。", Toast.LENGTH_SHORT).show();
 
             Memo memo = memo_adapter.getMemoAtPosition(position);
             MemoViewModel viewModel = MainActivity.getMemoViewModel();

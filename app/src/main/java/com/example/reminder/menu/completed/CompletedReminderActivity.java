@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.reminder.AllFragment;
 import com.example.reminder.DetailActivity;
@@ -83,7 +84,7 @@ public class CompletedReminderActivity extends AppCompatActivity implements
     public void onItemClick(View view, int position) {
         Log.d("CMP: ON ITEM CLICK", "O N I T E M C L I C K : position = "+position);
 
-        Intent det_intent = new Intent(this, DetailActivity.class);
+        Intent det_intent = new Intent(this, CompletedDetailActivity.class);
         //get a clicked memo
         Memo clicked_memo = adapter.getMemoAtPosition(position);
         //put some arguments
@@ -96,15 +97,22 @@ public class CompletedReminderActivity extends AppCompatActivity implements
 
     @Override
     public void onChecked(View view, int position, boolean isChecked) {
-        if(isChecked) {
+        if(!isChecked) {
             Log.d("IS CHECKED == FALSE", "I S C H E C K E D = = T R U E");
+            Log.d("RESETTING","R E S E T T I N G");
 
-            /*
-            Memo memo = adapter.getMemoAtPosition(position);
-            //when checked the box, it is updated to add new value of completed
-            memo.setCompleted(false);
-            viewModel.update(memo);
-             */
+            //get a clicked memo
+            Memo checked_memo = adapter.getMemoAtPosition(position);
+            MemoViewModel viewModel = MainActivity.getMemoViewModel();
+            //delete->同じMemoにcompleted属性をつけて再構成
+            Memo completed_memo = new Memo(
+                    checked_memo.getId(), checked_memo.getTopic(), checked_memo.getSummary());
+            viewModel.delete(completed_memo);
+            completed_memo.setCompleted(false);
+            viewModel.insert(completed_memo);
+
+            //resetting message
+            Toast.makeText(this, R.string.message_resetting, Toast.LENGTH_SHORT).show();
         }
     }
 }

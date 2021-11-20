@@ -56,4 +56,6 @@
     <string name="button_edit">編集</string>
     <string name="button_delete">削除</string>
     <string name="alert_delete">リマインダーを削除しますか？</string>
+    <string name="button_resetting">再設定</string>
+    <string name="message_resetting">リマインダーを再設定しました。</string>
 </resources>

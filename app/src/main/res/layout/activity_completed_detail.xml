@@ -38,7 +38,7 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/liner_show"
+        app:layout_constraintTop_toBottomOf="@id/cmp_liner_show"
         android:layout_marginTop="10sp"
         layout="@layout/save_location"/>
 
@@ -51,16 +51,14 @@
 
         <Button
             android:id="@+id/cmp_button_resetting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:text="@string/button_resetting"
             style="@style/detail_button_style"
-            android:layout_weight="1"/>
+            android:drawableTop="@drawable/ic_resetting"/>
 
         <Button
             android:id="@+id/cmp_button_delete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:text="@string/button_delete"
             style="@style/detail_button_style"
-            android:layout_weight="1"/>
+            android:drawableTop="@drawable/ic_deleted"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
