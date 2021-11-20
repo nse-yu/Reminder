@@ -50,7 +50,6 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
         if(memos != null){
             //get memo
             Memo current = memos.get(position);
-
             //restrict summary length to show in the recycler view holder
             String sub_summary;
             if(current.getSummary().length() > 40)
@@ -61,6 +60,8 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
             //set text to textview in recyclerview
             holder.text_topic.setText(current.getTopic());
             holder.text_summary.setText(sub_summary);
+            holder.checkBox.setChecked(current.isCompleted());
+
         }else{
             holder.text_topic.setText(R.string.topic_nothing);
             holder.text_summary.setText(R.string.summary_nothing);
@@ -68,9 +69,9 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
     }
 
     public void setMemos(List<Memo> memos){
+        Log.d("SET MEMOS","S E T M E M O S");
         this.memos = memos;
-        if (memos != null)
-            notifyDataSetChanged();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -90,12 +91,13 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
             implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
         private final TextView text_topic;
         private final TextView text_summary;
+        private final CheckBox checkBox;
 
         public MemoViewHolder(@NonNull View itemView) {
             super(itemView);
             text_topic = itemView.findViewById(R.id.text_topic);
             text_summary = itemView.findViewById(R.id.text_summary);
-            CheckBox checkBox = itemView.findViewById(R.id.checkbox);
+            checkBox = itemView.findViewById(R.id.checkbox);
 
             //set the listener
             itemView.setOnClickListener(this);
@@ -115,5 +117,23 @@ public class MemoAdapter extends RecyclerView.Adapter<MemoAdapter.MemoViewHolder
 
             clickListener.onChecked(compoundButton, getAdapterPosition(),b);
         }
+    }
+
+    @Override
+    public void onViewRecycled(@NonNull MemoViewHolder holder) {
+        super.onViewRecycled(holder);
+        Log.d("ON VIEW RECYCLED","O N V I E W R E C Y C L E D");
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        Log.d("ON ATTACHED","O N A T T A C H E D");
+    }
+
+    @Override
+    public void onViewAttachedToWindow(@NonNull MemoViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        Log.d("ON VIEW ATTACHED","O N V I E W A T T A C H E D");
     }
 }

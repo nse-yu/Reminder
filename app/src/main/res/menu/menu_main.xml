@@ -2,39 +2,39 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/append"
+        android:id="@+id/menu_append"
         android:title="@string/menu_append"
         android:orderInCategory="1"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_add" />
     <item
-        android:id="@+id/search"
+        android:id="@+id/menu_search"
         android:title="@string/menu_search"
         android:orderInCategory="2"
         app:showAsAction="always"
         android:icon="@drawable/ic_search"/>
     <item
-        android:id="@+id/edit"
+        android:id="@+id/button_edit"
         android:title="@string/menu_edit"
         android:orderInCategory="3"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/arrange"
+        android:id="@+id/menu_arrange"
         android:title="@string/menu_arrange"
         android:orderInCategory="4"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/complete"
+        android:id="@+id/menu_complete"
         android:title="@string/menu_complete"
         android:orderInCategory="5"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/share"
+        android:id="@+id/menu_share"
         android:title="@string/menu_share"
         android:orderInCategory="6"
         app:showAsAction="never" />
     <item
-        android:id="@+id/options"
+        android:id="@+id/menu_options"
         android:title="@string/menu_options"
         android:orderInCategory="100"
         app:showAsAction="never" />

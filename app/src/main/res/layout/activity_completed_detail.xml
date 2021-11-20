@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".DetailActivity">
+    tools:context=".menu.completed.CompletedDetailActivity">
 
     <LinearLayout
-        android:id="@+id/liner_show"
+        android:id="@+id/cmp_liner_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
@@ -19,14 +19,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/show_topic"
+            android:id="@+id/cmp_show_topic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:paddingTop="10sp"
             android:textColor="@color/white"/>
         <TextView
-            android:id="@+id/show_summary"
+            android:id="@+id/cmp_show_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="20sp"
@@ -38,7 +38,7 @@
     <include
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/liner_show"
+        app:layout_constraintTop_toBottomOf="@id/cmp_liner_show"
         android:layout_marginTop="10sp"
         layout="@layout/save_location"/>
 
@@ -50,17 +50,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button_complete"
+            android:id="@+id/cmp_button_resetting"
+            android:text="@string/button_resetting"
             style="@style/detail_button_style"
-            android:drawableTop="@drawable/ic_checked"
-            android:text="@string/button_complete" />
+            android:drawableTop="@drawable/ic_resetting"/>
+
         <Button
-            android:id="@+id/button_edit"
-            android:text="@string/button_edit"
-            style="@style/detail_button_style"
-            android:drawableTop="@drawable/ic_pencil"/>
-        <Button
-            android:id="@+id/button_delete"
+            android:id="@+id/cmp_button_delete"
             android:text="@string/button_delete"
             style="@style/detail_button_style"
             android:drawableTop="@drawable/ic_deleted"/>

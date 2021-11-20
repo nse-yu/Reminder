@@ -15,6 +15,9 @@ public class Memo {
     private String topic;
     @NonNull
     private String summary;
+    /**初期状態をfalse（未完了）とする*/
+    @NonNull
+    private boolean completed = false;
 
     //constructor
     @Ignore
@@ -26,10 +29,23 @@ public class Memo {
         this.summary = summary;
     }
     @Ignore
+    public Memo(@NonNull String topic, @NonNull String summary,@NonNull boolean completed) {
+        this.topic = topic;
+        this.summary = summary;
+        this.completed = completed;
+    }
+    @Ignore
     public Memo(int id, @NonNull String topic,@NonNull String summary) {
         this.id = id;
         this.topic = topic;
         this.summary = summary;
+    }
+    @Ignore
+    public Memo(int id, @NonNull String topic,@NonNull String summary,@NonNull boolean completed) {
+        this.id = id;
+        this.topic = topic;
+        this.summary = summary;
+        this.completed = completed;
     }
 
     //getter
@@ -44,6 +60,8 @@ public class Memo {
     public String getSummary() {
         return summary;
     }
+    @NonNull
+    public boolean isCompleted(){return completed;}
 
     //setter
     public void setId(int id) {
@@ -55,4 +73,5 @@ public class Memo {
     public void setSummary(@NonNull String summary) {
         this.summary = summary;
     }
+    public void setCompleted(@NonNull boolean completed){this.completed = completed;}
 }

@@ -1,10 +1,15 @@
 <resources>
+    <!-- Appbar titles -->
     <string name="app_name">Reminder</string>
+    <string name="app_all">全て</string>
+    <string name="app_reminder">リマインダー</string>
+    <string name="app_todo">Microsoft To Do</string>
+    <string name="title_activity_settings">リマインダー設定</string>
+    <string name="app_completed">完了済み</string>
+    <!-- menu -->
     <string name="menu_append">append</string>
     <string name="menu_search">search</string>
     <string name="menu_options">設定</string>
-    <string name="title_activity_settings">リマインダー設定</string>
-
     <!-- Preference header -->
     <string name="account_header">クラウドアカウント</string>
     <string name="preset_header">プリセット</string>
@@ -51,4 +56,6 @@
     <string name="button_edit">編集</string>
     <string name="button_delete">削除</string>
     <string name="alert_delete">リマインダーを削除しますか？</string>
+    <string name="button_resetting">再設定</string>
+    <string name="message_resetting">リマインダーを再設定しました。</string>
 </resources>
