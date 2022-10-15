@@ -1,48 +1,47 @@
 package com.example.reminder.menu.completed;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import com.example.reminder.AllFragment;
-import com.example.reminder.DetailActivity;
-import com.example.reminder.MainActivity;
 import com.example.reminder.R;
 import com.example.reminder.adapter.MemoAdapter;
-import com.example.reminder.database.MemoViewModel;
+import com.example.reminder.background.QueryViewModel;
 import com.example.reminder.database.room.Memo;
-import com.example.reminder.databinding.ActivityCompletedBinding;
 import com.example.reminder.databinding.ActivityCompletedReminderBinding;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CompletedReminderActivity extends AppCompatActivity implements
-        MemoAdapter.ClickListener {
-    private MemoViewModel viewModel;
-    private MemoAdapter adapter;
-    public static final String TOPIC_STRING = "TOPIC";
-    public static final String SUMMARY_STRING = "SUMMARY";
-    public static final String ID_INT = "ID";
+public class CompletedReminderActivity extends AppCompatActivity implements MemoAdapter.ClickListener {
+
+    private QueryViewModel  queryViewModel;
+
+    /**This MemoAdapter is different from ones in the MainActivity because this is responsible for memos completed*/
+    private MemoAdapter     completedMemoAdapter;
+
+    public static final String TOPIC_STRING     = "TOPIC";
+    public static final String SUMMARY_STRING   = "SUMMARY";
+    public static final String ID_INT           = "ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityCompletedReminderBinding binding =
-                ActivityCompletedReminderBinding.inflate(getLayoutInflater());
+
+        //view binding
+        ActivityCompletedReminderBinding binding = ActivityCompletedReminderBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //actionbar
+        //[ActionBar]
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setBackgroundDrawable(ResourcesCompat.getDrawable(getResources(),
@@ -50,69 +49,71 @@ public class CompletedReminderActivity extends AppCompatActivity implements
             actionBar.setTitle(R.string.app_reminder);
         }
 
-        //initialize
+        //[MemoAdapter]
+        completedMemoAdapter = new MemoAdapter();
+        completedMemoAdapter.setOnCheckedListener(this);
+
+        //[RecyclerView]
         RecyclerView recyclerView = binding.recyclerview;
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        viewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication())
-                .create(MemoViewModel.class);
-        adapter = new MemoAdapter(this);
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(completedMemoAdapter);
 
-        //listener
-        adapter.setOnCheckedListener(this);
 
-        viewModel.selectAll().observe(this, memos -> {
-            Log.d("OBSERVE CHANGED", "COMPLETED O B S E R V E C H A N G E D sum = " + memos.size());
+        //[QueryViewModel]
+        queryViewModel = new ViewModelProvider(
+                this,
+                ViewModelProvider.Factory.from(new ViewModelInitializer<>(
+                        QueryViewModel.class,
+                        creationExtras -> new QueryViewModel(getApplication())
+                ))
+        ).get(QueryViewModel.class);
 
-            List<Memo> new_list = new ArrayList<>();
+        queryViewModel.getMemos().observe(this, getListObserver());
+    }
 
-            /*isCompletedによって、完了リストへ移動するものとそうでないものをわける
-             * データベース上はどちらも存在するが、recyclerview上ではnot completedのみ表示*/
-            for(int i = 0;i < memos.size();i++){
-                if(memos.get(i).isCompleted()) {
-                    Log.d("CHECKED","C H E C K E D : "+i);
-                    new_list.add(memos.get(i));
-                }
-            }
+    @NotNull
+    private Observer<List<Memo>> getListObserver() {
+
+        return all -> {
+
             //adapt the new list of memo that excludes the completed memo
-            adapter.setMemos(new_list);
-        });
+            completedMemoAdapter.setMemos(
+                    all.stream().filter(Memo::isCompleted).collect(Collectors.toList())
+            );
+
+        };
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        Log.d("CMP: ON ITEM CLICK", "O N I T E M C L I C K : position = "+position);
 
-        Intent det_intent = new Intent(this, CompletedDetailActivity.class);
+        //special version of the DetailActivity
+        Intent toCompletedDetail = new Intent(this, CompletedDetailActivity.class);
+
         //get a clicked memo
-        Memo clicked_memo = adapter.getMemoAtPosition(position);
+        Memo clickedMemo = completedMemoAdapter.getMemoAtPosition(position);
+
         //put some arguments
-        det_intent.putExtra(TOPIC_STRING,clicked_memo.getTopic());
-        det_intent.putExtra(SUMMARY_STRING,clicked_memo.getSummary());
-        det_intent.putExtra(ID_INT,clicked_memo.getId());
+        toCompletedDetail.putExtra(TOPIC_STRING,clickedMemo.getTopic());
+        toCompletedDetail.putExtra(SUMMARY_STRING,clickedMemo.getSummary());
+        toCompletedDetail.putExtra(ID_INT,clickedMemo.getId());
+
         //start
-        startActivity(det_intent);
+        startActivity(toCompletedDetail);
     }
 
     @Override
     public void onChecked(View view, int position, boolean isChecked) {
-        if(!isChecked) {
-            Log.d("IS CHECKED == FALSE", "I S C H E C K E D = = T R U E");
-            Log.d("RESETTING","R E S E T T I N G");
 
-            //get a clicked memo
-            Memo checked_memo = adapter.getMemoAtPosition(position);
-            MemoViewModel viewModel = MainActivity.getMemoViewModel();
-            //delete->同じMemoにcompleted属性をつけて再構成
-            Memo completed_memo = new Memo(
-                    checked_memo.getId(), checked_memo.getTopic(), checked_memo.getSummary());
-            viewModel.delete(completed_memo);
-            completed_memo.setCompleted(false);
-            viewModel.insert(completed_memo);
+        if(isChecked) return;
 
-            //resetting message
-            Toast.makeText(this, R.string.message_resetting, Toast.LENGTH_SHORT).show();
-        }
+        //get a clicked memo
+        Memo checkedMemo = completedMemoAdapter.getMemoAtPosition(position);
+
+        //changes "completed" state of memos to false( not completed, default state )
+        queryViewModel.toggleCompletedState(checkedMemo.getId(), false);
+
+        //notify that a checked memo is reassigned
+        Toast.makeText(this, R.string.message_resetting, Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,39 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    tools:context=".MainActivity">
+    xmlns:app   ="http://schemas.android.com/apk/res-auto"
+    xmlns:tools ="http://schemas.android.com/tools"
+    android:layout_width    ="match_parent"
+    android:layout_height   ="match_parent"
+    android:background      ="@color/white"
+    tools:context=".MainActivity"
+>
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/Theme.Reminder.AppBarOverlay">
-
+            android:id              ="@+id/appBar"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="wrap_content"
+            android:padding         ="5sp"
+            android:background      ="@color/black"
+            app:layout_constraintTop_toTopOf    ="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf    ="parent"
+            android:theme="@style/Theme.Reminder.AppBarOverlay"
+    >
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/black"
-            app:popupTheme="@style/Theme.Reminder.PopupOverlay"/>
-
+            android:id              ="@+id/toolbar"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="?attr/actionBarSize"
+            android:background      ="@color/black"
+            app:popupTheme          ="@style/Theme.Reminder.PopupOverlay"
+        />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"/>
+            android:id              ="@+id/viewpager"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="0dp"
+            android:orientation     ="horizontal"
+            app:layout_constraintStart_toStartOf    ="parent"
+            app:layout_constraintEnd_toEndOf        ="parent"
+            app:layout_constraintBottom_toBottomOf  ="parent"
+            app:layout_constraintTop_toBottomOf     ="@id/appBar"
+    />
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        app:tabSelectedTextColor="@color/mediumslateblue"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+            android:id              ="@+id/tabLayout"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="wrap_content"
+            android:background      ="@color/black"
+            android:padding         ="10sp"
+            app:tabSelectedTextColor="@color/medium_slate_blue"
+            app:layout_constraintBottom_toBottomOf  ="parent"
+            app:layout_constraintStart_toStartOf    ="parent"
+            app:layout_constraintEnd_toEndOf        ="parent"
+    />
 </androidx.constraintlayout.widget.ConstraintLayout>

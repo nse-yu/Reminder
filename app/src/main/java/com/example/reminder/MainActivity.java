@@ -1,190 +1,181 @@
 package com.example.reminder;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.viewmodel.ViewModelInitializer;
+import androidx.viewpager2.widget.ViewPager2;
 import com.example.reminder.adapter.MemoAdapter;
 import com.example.reminder.adapter.TabAdapter;
-import com.example.reminder.database.MemoViewModel;
+import com.example.reminder.background.QueryViewModel;
+import com.example.reminder.contracts.NewMemoContract;
 import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityMainBinding;
-import com.example.reminder.menu.completed.CompletedActivity;
 import com.example.reminder.menu.SettingsActivity;
+import com.example.reminder.menu.completed.CompletedActivity;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
-    private ActivityMainBinding binding;
-    private ViewPager2 viewPager;
-    private static MemoViewModel viewModel;
+
+    //view binding
+    private ActivityMainBinding     binding;
+
+    //enables to use RecyclerView
+    private ViewPager2              viewPager;
+
+    private MemoAdapter             memoAdapter;
+
+    //
+    private static QueryViewModel   viewModel;
+
+    public String[]                 tabNames;
+
+    private final ActivityResultLauncher<Integer> launcher = registerForActivityResult(
+            new NewMemoContract(),
+            result -> {
+                Memo memo = new Memo(result[0], result[1], false);
+                viewModel.insert(memo);
+            }
+    );
+
+    //
     public static final int REQUEST_INSERT = 1;
-    private List<Memo> new_list;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("ON CREATE","O N C R E A T E");
         super.onCreate(savedInstanceState);
+
+        //view binding
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //===============Initialization===============//
+        tabNames = new String[]{
+                getString(R.string.tab_all),
+                getString(R.string.tab_reminder),
+                getString(R.string.tab_todo)
+        };
+
+        //================View Settings================//
+
+        //[ToolBar] set the toolbar default strings
         binding.toolbar.setTitle(R.string.app_all);
         setSupportActionBar(binding.toolbar);
 
-        //initialize
+
+        //[MemoAdapter]
+        memoAdapter = new MemoAdapter();
+
+
+        //[ViewPager2]
         viewPager = binding.viewpager;
-        TabLayout tabLayout = setTabLayout();
-        
-        //initialize adapter
-        TabAdapter tab_adapter = new TabAdapter(getSupportFragmentManager(),getLifecycle(),
-                tabLayout.getTabCount());
+        viewPager.setUserInputEnabled(false); //restrict swiping
+        viewPager.setAdapter(
+                new TabAdapter(getSupportFragmentManager(), getLifecycle(), tabNames.length, memoAdapter)
+        );
 
-        //restrict swiping
-        viewPager.setUserInputEnabled(false);
+        //[TabLayout] links TabLayout to ViewPager2
+        binding.tabLayout.addOnTabSelectedListener(new TabListenerClass());
+        new TabLayoutMediator(binding.tabLayout, viewPager, (tab, position) -> tab.setText(tabNames[position])).attach();
 
-        //Set a new adapter to provide page views on demand.
-        viewPager.setAdapter(tab_adapter);
 
-        //listener
-        tabLayout.addOnTabSelectedListener(new TabListenerClass());
-        
-        //create a ViewModel
-        viewModel = ViewModelProvider.AndroidViewModelFactory
-                .getInstance(getApplication())
-                .create(MemoViewModel.class);
+        //[ViewModel] TODO:用途を記述
+        viewModel = new ViewModelProvider(
+                this,
+                ViewModelProvider.Factory.from(new ViewModelInitializer<>(
+                        QueryViewModel.class,
+                        creationExtras -> new QueryViewModel(getApplication())
+                ))
+        ).get(QueryViewModel.class);
 
-        //set the observer
-        viewModel.selectAll().observe(this, memos -> {
-            Log.d("OBSERVE CHANGED", "MAIN O B S E R V E C H A N G E D sum = " + memos.size());
+        viewModel.getMemos().observe(this, getListObserver());
+    }
 
-            MemoAdapter memoAdapter = AllFragment.getMemoAdapter();
-            new_list = new ArrayList<>();
+    /**Observes all memos and add memos without "isCompleted" status to the RecyclerView using memoAdapter. */
+    @NotNull
+    private Observer<List<Memo>> getListObserver() {
 
-            /*isCompletedによって、完了リストへ移動するものとそうでないものをわける
-            * データベース上はどちらも存在するが、recyclerview上ではnot completedのみ表示*/
-            for(int i = 0;i < memos.size();i++){
-                if(!(memos.get(i).isCompleted())) {
-                    Log.d("NOT CHECKED","U N C H E C K E D : "+i);
-                    new_list.add(memos.get(i));
-                }
-            }
+        return all -> {
+
             //adapt the new list of memo that excludes the completed memo
-            memoAdapter.setMemos(new_list);
-        });
+            memoAdapter.setMemos(
+                    all.stream().filter(memo -> !memo.isCompleted()).collect(Collectors.toList())
+            );
+
+        };
     }
 
-    private TabLayout setTabLayout(){
-        TabLayout tabLayout = binding.tabLayout;
-        //tab数はここで決まる
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_all)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_reminder)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.tab_todo)));
-
-        return tabLayout;
-    }
-
-    public static MemoViewModel getMemoViewModel(){
+    public static QueryViewModel getMemoViewModel(){
         return viewModel;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main,menu);
+
+        //inflates the menu
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         final int itemID = item.getItemId();
+        Intent intent = null;
 
         if(itemID == R.id.menu_options){
-            Intent options_intent = new Intent(this, SettingsActivity.class);
-            startActivity(options_intent);
+
+            intent = new Intent(this, SettingsActivity.class);
+
         }else if(itemID == R.id.menu_append){
-            Intent append_intent = new Intent(this,NewMemoActivity.class);
-            startActivityForResult(append_intent,REQUEST_INSERT);
+
+            launcher.launch(REQUEST_INSERT);
+            return super.onOptionsItemSelected(item);
+
         }else if(itemID == R.id.menu_complete){
-            Intent completed_intent = new Intent(this, CompletedActivity.class);
-            startActivity(completed_intent);
+
+            intent = new Intent(this, CompletedActivity.class);
+
         }
+
+        startActivity(intent);
+
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        //only insert query and if the action is "insert", should put third argument "false"
-        if(requestCode == REQUEST_INSERT && resultCode == RESULT_OK){
-            //data is not null
-            if (data != null) {
-                String[] content = data.getStringArrayExtra(NewMemoActivity.EDIT_REPLY);
-                Memo memo = new Memo(content[0], content[1],false);
-                viewModel.insert(memo);
-            }
-        }else{
-            Log.d("RESULT CANCELED","R E S U L T C A N C E L E D");
-        }
     }
 
     private class TabListenerClass implements TabLayout.OnTabSelectedListener{
 
         @Override
         public void onTabSelected(TabLayout.Tab tab) {
-            Log.d("ON TAB SELECTED","O N T A B S E L E C T E D"+tab.getPosition());
 
-            int position = tab.getPosition();
-            if(position == 0)
-                binding.toolbar.setTitle(R.string.app_all);
-            else if(position == 1)
-                binding.toolbar.setTitle(R.string.app_reminder);
-            else
-                binding.toolbar.setTitle(R.string.app_todo);
+            //set ToolBar the name of pages
+            binding.toolbar.setTitle(tabNames[tab.getPosition()]);
+
             //多分この後にcreateFragmentがadapterで呼び出される
-            viewPager.setCurrentItem(position);
+            viewPager.setCurrentItem(tab.getPosition());
         }
 
         @Override
         public void onTabUnselected(TabLayout.Tab tab) {
 
         }
-
         @Override
         public void onTabReselected(TabLayout.Tab tab) {
 
         }
-    }
-
-    /**In this method, adapter will bind a new_list to ViewHolder.
-     * ※A new_list is the previous list preserved in this activity's active state*/
-    @Override
-    protected void onResume() {
-        Log.d("ON RESUME","O N R E S U M E");
-        super.onResume();
-
-        MemoAdapter memoAdapter;
-        if((memoAdapter = AllFragment.getMemoAdapter()) != null)
-            memoAdapter.setMemos(new_list);
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("ON STOP","O N S T O P");
-        super.onStop();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d("ON PAUSE","O N P A U S E");
-        super.onPause();
     }
 }

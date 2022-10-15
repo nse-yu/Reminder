@@ -1,24 +1,24 @@
 package com.example.reminder.adapter;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.reminder.AllFragment;
+import com.example.reminder.fragment.AllFragment;
 import com.example.reminder.fragment.ReminderFragment;
 import com.example.reminder.fragment.TodoFragment;
 
 public class TabAdapter extends FragmentStateAdapter {
     private final int totalTabs;
+    private final MemoAdapter memoAdapter;
 
-    public TabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle,
-                      int totalTabs) {
+    public TabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, int totalTabs, MemoAdapter memoAdapter) {
         super(fragmentManager, lifecycle);
-        this.totalTabs = totalTabs;
+
+        this.totalTabs      = totalTabs;
+        this.memoAdapter    = memoAdapter;
     }
 
     /**Provide a new Fragment associated with the specified position.
@@ -31,20 +31,16 @@ public class TabAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        Log.d("CREATE FRAGMENT","C R E A T E F R A G M E N T");
 
         if(position == 0)
-            return new AllFragment();
+            return new AllFragment(memoAdapter);
         else if(position == 1)
             return new ReminderFragment();
-        else if(position == 2)
-            return new TodoFragment();
-        return null;
+
+        return new TodoFragment();
     }
 
-    /**Returns the total number of items in the data set held by the adapter.
-     Returns:
-     The total number of items in this adapter.*/
+    /**Returns the total number of items in the data set held by the adapter.*/
     @Override
     public int getItemCount() {
         return totalTabs;

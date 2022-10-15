@@ -4,19 +4,19 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "table_memo")
 public class Memo {
-    /**固有のidであり、自動生成される。*/
+
     @PrimaryKey(autoGenerate = true)
-    private int id;
-    /**idによって一意に識別されるテキスト*/
+    private int     id;
+
     @NonNull
-    private String topic;
-    @NonNull
-    private String summary;
-    /**初期状態をfalse（未完了）とする*/
-    @NonNull
+    private String  topic;
+
+    private String  summary;
+
     private boolean completed = false;
 
     //constructor
@@ -25,43 +25,42 @@ public class Memo {
         this.topic = topic;
     }
     public Memo(@NonNull String topic, @NonNull String summary) {
-        this.topic = topic;
-        this.summary = summary;
+        this.topic      = topic;
+        this.summary    = summary;
     }
     @Ignore
-    public Memo(@NonNull String topic, @NonNull String summary,@NonNull boolean completed) {
-        this.topic = topic;
-        this.summary = summary;
-        this.completed = completed;
+    public Memo(@NonNull String topic, @NonNull String summary, boolean completed) {
+        this.topic      = topic;
+        this.summary    = summary;
+        this.completed  = completed;
     }
     @Ignore
-    public Memo(int id, @NonNull String topic,@NonNull String summary) {
-        this.id = id;
-        this.topic = topic;
-        this.summary = summary;
+    public Memo(int id, @NonNull String topic, @NonNull String summary) {
+        this.id         = id;
+        this.topic      = topic;
+        this.summary    = summary;
     }
     @Ignore
-    public Memo(int id, @NonNull String topic,@NonNull String summary,@NonNull boolean completed) {
-        this.id = id;
-        this.topic = topic;
-        this.summary = summary;
-        this.completed = completed;
+    public Memo(int id, @NonNull String topic, @NonNull String summary, boolean completed) {
+        this.id         = id;
+        this.topic      = topic;
+        this.summary    = summary;
+        this.completed  = completed;
     }
 
     //getter
-    public int getId() {
+    public int      getId() {
         return id;
     }
     @NonNull
-    public String getTopic() {
+    public String   getTopic() {
         return topic;
     }
     @NonNull
-    public String getSummary() {
+    public String   getSummary() {
         return summary;
     }
-    @NonNull
-    public boolean isCompleted(){return completed;}
+    public boolean  isCompleted(){ return completed; }
 
     //setter
     public void setId(int id) {
@@ -73,5 +72,16 @@ public class Memo {
     public void setSummary(@NonNull String summary) {
         this.summary = summary;
     }
-    public void setCompleted(@NonNull boolean completed){this.completed = completed;}
+    public void setCompleted(boolean completed){ this.completed = completed; }
+
+    @NotNull
+    @Override
+    public String toString() {
+        return "Memo{" +
+                "id=" + id +
+                ", topic='" + topic + '\'' +
+                ", summary='" + summary + '\'' +
+                ", completed=" + completed +
+                '}';
+    }
 }

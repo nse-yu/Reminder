@@ -1,16 +1,14 @@
 package com.example.reminder.database.room;
 
 import android.content.Context;
-
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Memo.class},version = 4,exportSchema = false)
 public abstract class MemoDatabase extends RoomDatabase {
-    private static MemoDatabase INSTANCE;
+
+    private static volatile MemoDatabase INSTANCE;
 
     public abstract MemoDao getMemoDao();
 

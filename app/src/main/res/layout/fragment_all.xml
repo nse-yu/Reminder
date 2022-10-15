@@ -6,7 +6,7 @@
     android:paddingTop="?attr/actionBarSize"
     android:paddingBottom="?attr/actionBarSize"
     android:background="@color/black"
-    tools:context=".AllFragment">
+    tools:context=".fragment.AllFragment">
 
     <!-- TODO: Update blank fragment layout -->
 

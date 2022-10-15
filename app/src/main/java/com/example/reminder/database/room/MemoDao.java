@@ -1,12 +1,7 @@
 package com.example.reminder.database.room;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
-import androidx.room.Delete;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
-import androidx.room.Query;
-import androidx.room.Update;
+import androidx.room.*;
 
 import java.util.List;
 
@@ -19,12 +14,16 @@ public interface MemoDao {
     @Update
     void update(Memo... memos);
 
+
+    @Query("UPDATE table_memo SET completed = :state WHERE id = :id")
+    void toggleCompletedState(int id, int state);
+
     @Query("SELECT * FROM table_memo ORDER BY id")
     LiveData<List<Memo>> selectAll();
-    @Query("SELECT * FROM table_memo LIMIT 1")
-    Memo[] selectMemo();
+
     @Query("DELETE FROM table_memo")
     void deleteAll();
+
     @Query("SELECT count(*) FROM table_memo WHERE completed = 1")
-    int countCompleted();
+    LiveData<List<Integer>> countCompleted();
 }

@@ -1,33 +1,33 @@
-package com.example.reminder;
+package com.example.reminder.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import com.example.reminder.DetailActivity;
+import com.example.reminder.R;
 import com.example.reminder.adapter.MemoAdapter;
-import com.example.reminder.database.MemoViewModel;
+import com.example.reminder.background.QueryViewModel;
 import com.example.reminder.database.room.Memo;
 
 public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
-    private static MemoAdapter memo_adapter;
-    public static final String TOPIC_STRING = "TOPIC";
-    public static final String SUMMARY_STRING = "SUMMARY";
-    public static final String ID_INT = "ID";
+    private MemoAdapter memoAdapter;
+    public static final String TOPIC_STRING     = "TOPIC";
+    public static final String SUMMARY_STRING   = "SUMMARY";
+    public static final String ID_INT           = "ID";
 
-    public AllFragment() {
-        // Required empty public constructor
+    public AllFragment(){}
+
+    public AllFragment(MemoAdapter memoAdapter) {
+        this.memoAdapter = memoAdapter;
     }
 
     @Override
@@ -51,47 +51,47 @@ public class AllFragment extends Fragment implements MemoAdapter.ClickListener{
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         //apply some effect to recyclerview
-        memo_adapter = new MemoAdapter(getActivity());
-        recyclerView.setAdapter(memo_adapter);
+        recyclerView.setAdapter(memoAdapter);
 
         //listener
-        memo_adapter.setOnCheckedListener(this);
+        memoAdapter.setOnCheckedListener(this);
     }
 
-    /**This method is used to give a MemoAdapter instance to an activity of the outside
-     * */
-    public static MemoAdapter getMemoAdapter(){
-        return memo_adapter;
-    }
-
+    /**Implementations for Listener of the MemoAdapter. This is responsible for the click. */
     @Override
     public void onItemClick(View view, int position) {
-        Log.d("ON ITEM CLICK", "O N I T E M C L I C K : position = "+position);
 
-        Intent det_intent = new Intent(getContext(),DetailActivity.class);
+        Intent det_intent = new Intent(getContext(), DetailActivity.class);
+
         //get a clicked memo
-        Memo clicked_memo = memo_adapter.getMemoAtPosition(position);
+        Memo clicked_memo = memoAdapter.getMemoAtPosition(position);
+
         //put some arguments
-        Log.d("TOPIC",clicked_memo.getTopic());
         det_intent.putExtra(TOPIC_STRING,clicked_memo.getTopic());
-        Log.d("SUMMARY",clicked_memo.getSummary());
         det_intent.putExtra(SUMMARY_STRING,clicked_memo.getSummary());
         det_intent.putExtra(ID_INT,clicked_memo.getId());
+
         //start
         startActivity(det_intent);
     }
 
+    /**Implementations for Listener of the MemoAdapter. This is responsible for the check. */
     @Override
     public void onChecked(View view, int position, boolean isChecked) {
-        if(isChecked) {
-            Log.d("IS CHECKED == TRUE", "I S C H E C K E D = = T R U E : position = "+position);
-            Toast.makeText(getActivity(), "リマインダーを完了しました。", Toast.LENGTH_SHORT).show();
 
-            Memo memo = memo_adapter.getMemoAtPosition(position);
-            MemoViewModel viewModel = MainActivity.getMemoViewModel();
-            //when checked the box, it is updated to add new value of completed
-            memo.setCompleted(true);
-            viewModel.update(memo);
-        }
+        if(!isChecked) return;
+
+        //notify that a memo is completed
+        Toast.makeText(getActivity(), "リマインダーを完了しました。", Toast.LENGTH_SHORT).show();
+
+        //retrieve a memo
+        Memo memo = memoAdapter.getMemoAtPosition(position);
+
+        //retrieve the ViewModel scoped to the MainActivity( RequireActivity() retrieves parent application instances )
+        QueryViewModel viewModel = new ViewModelProvider(requireActivity()).get(QueryViewModel.class);
+
+        //when checked the box, it is updated to add new value of completed
+        memo.setCompleted(true);
+        viewModel.update(memo);
     }
 }

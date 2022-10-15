@@ -7,7 +7,7 @@
         <item name="android:layout_weight">0.5</item>
         <item name="android:textSize">15sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/mediumslateblue</item>
+        <item name="android:textColor">@color/medium_slate_blue</item>
         <item name="background">@drawable/ripple_effect</item>
     </style>
 
