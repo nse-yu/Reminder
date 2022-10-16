@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="?attr/actionBarSize"
-    android:paddingBottom="?attr/actionBarSize"
-    android:background="@color/black"
-    tools:context=".fragment.AllFragment">
-
-    <!-- TODO: Update blank fragment layout -->
+             xmlns:tools="http://schemas.android.com/tools"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:background="@color/black"
+             tools:context=".fragment.AllFragment"
+>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:listitem="@layout/recyclerview_items"/>
+            android:id              ="@+id/recyclerview"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="wrap_content"
+            app:reverseLayout       ="true"
+            app:stackFromEnd        ="true"
+            tools:listitem          ="@layout/row"
+    />
 
 </FrameLayout>

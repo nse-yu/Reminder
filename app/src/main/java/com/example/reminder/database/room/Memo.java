@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import org.jetbrains.annotations.NotNull;
 
 @Entity(tableName = "table_memo")
 public class Memo {
@@ -17,6 +16,8 @@ public class Memo {
 
     private String  summary;
 
+    private int     location = LocationCodes.REMINDER.code;
+
     private boolean completed = false;
 
     //constructor
@@ -24,28 +25,50 @@ public class Memo {
     public Memo(@NonNull String topic) {
         this.topic = topic;
     }
+
+    @Ignore
     public Memo(@NonNull String topic, @NonNull String summary) {
-        this.topic      = topic;
+        this(topic);
         this.summary    = summary;
     }
     @Ignore
     public Memo(@NonNull String topic, @NonNull String summary, boolean completed) {
-        this.topic      = topic;
-        this.summary    = summary;
+        this(topic, summary);
         this.completed  = completed;
     }
+
+    @Ignore
+    public Memo(@NonNull String topic, @NonNull String summary, boolean completed, LocationCodes location) {
+        this(topic, summary, completed);
+        this.location   = location.code;
+    }
+
+    public Memo(@NonNull String topic, @NonNull String summary, boolean completed, int location) {
+        this(topic, summary, completed);
+        this.location   = location;
+    }
+
     @Ignore
     public Memo(int id, @NonNull String topic, @NonNull String summary) {
+        this(topic, summary);
         this.id         = id;
-        this.topic      = topic;
-        this.summary    = summary;
     }
     @Ignore
     public Memo(int id, @NonNull String topic, @NonNull String summary, boolean completed) {
-        this.id         = id;
-        this.topic      = topic;
-        this.summary    = summary;
+        this(id, topic, summary);
         this.completed  = completed;
+    }
+
+    @Ignore
+    public Memo(int id, @NonNull String topic, @NonNull String summary, int location) {
+        this(id, topic, summary);
+        this.location   = location;
+    }
+
+    @Ignore
+    public Memo(int id, @NonNull String topic, @NonNull String summary, boolean completed, LocationCodes location) {
+        this(topic, summary, completed, location);
+        this.id         = id;
     }
 
     //getter
@@ -62,6 +85,10 @@ public class Memo {
     }
     public boolean  isCompleted(){ return completed; }
 
+    public int      getLocation(){
+        return location;
+    }
+
     //setter
     public void setId(int id) {
         this.id = id;
@@ -74,13 +101,18 @@ public class Memo {
     }
     public void setCompleted(boolean completed){ this.completed = completed; }
 
-    @NotNull
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    @NonNull
     @Override
     public String toString() {
         return "Memo{" +
                 "id=" + id +
                 ", topic='" + topic + '\'' +
                 ", summary='" + summary + '\'' +
+                ", location=" + location +
                 ", completed=" + completed +
                 '}';
     }

@@ -11,9 +11,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class QueryRepository {
-    private final MemoDao               dao;
-    private final LiveData<List<Memo>>  memos;
-    private final LiveData<List<Integer>> countCompleted;
+    private final MemoDao                   dao;
+    private final LiveData<List<Memo>>      memos;
+    private final LiveData<List<Integer>>   countCompleted;
     private final ExecutorService service = Executors.newFixedThreadPool(1);
 
     public QueryRepository(Application application) {

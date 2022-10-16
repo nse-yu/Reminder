@@ -1,92 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black"
-    tools:context=".NewMemoActivity">
-
-    <RelativeLayout
-        android:id="@+id/relative"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:paddingTop="20sp"
-        android:paddingBottom="120sp"
-        android:paddingHorizontal="20sp"
-        android:background="@drawable/box_frame"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/edit_topic"
-            android:hint="@string/hint_topic"
-            android:textSize="25sp"
-
-            android:text=""
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/edit_style" />
-
-        <EditText
-            android:id="@+id/edit_summary"
-            android:layout_below="@id/edit_topic"
-            android:hint="@string/hint_summary"
-            android:textSize="20sp"
-            android:layout_marginTop="10sp"
-            android:text=""
-            app:layout_constraintTop_toBottomOf="@id/edit_topic"
-            style="@style/edit_style" />
-    </RelativeLayout>
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/relative"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/switch_date"
-        style="@style/switch_style" />
-
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_place"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/switch_date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/switch_place"
-        style="@style/switch_style" />
-
-    <include
-        layout="@layout/save_location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10sp"
-        app:layout_constraintTop_toBottomOf="@id/switch_place"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                    xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:orientation="vertical"
+                                                   android:padding="10dp"
+                                                   android:background="@color/black"
+                                                   tools:context=".NewMemoActivity"
+>
 
     <LinearLayout
-        android:id="@+id/liner_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="10sp"
-        android:orientation="horizontal">
+        android:id              ="@+id/relative"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="wrap_content"
+        android:orientation     ="vertical"
+        android:paddingTop      ="20sp"
+        android:paddingBottom   ="120sp"
+        android:paddingHorizontal="20sp"
+        android:background      ="@drawable/box_normal"
+        app:layout_constraintTop_toTopOf    ="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+    >
 
+        <EditText
+                android:id="@+id/edit_topic"
+                android:hint="@string/hint_topic"
+                android:textSize="30sp"
+                android:text=""
+                android:inputType="text"
+                android:layout_marginVertical="10sp"
+                android:importantForAutofill="no"
+                android:textColorHint="#717273"
+                android:minHeight="48dp"
+                style="@style/edit_style"
+        />
+
+        <EditText
+                android:id="@+id/edit_summary"
+                android:hint="@string/hint_summary"
+                android:textSize="20sp"
+                android:text=""
+                android:inputType="text"
+                android:layout_marginTop="10sp"
+                android:importantForAutofill="no"
+                android:textColorHint="#717273"
+                android:minHeight="48dp"
+                style="@style/edit_style"
+        />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id              ="@+id/switch_date"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="wrap_content"
+        android:text            ="@string/switch_date"
+        app:layout_constraintTop_toBottomOf ="@id/relative"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        style="@style/switch_style"
+    />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id              ="@+id/switch_place"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="wrap_content"
+        android:text            ="@string/switch_place"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf ="@id/switch_date"
+        app:layout_constraintEnd_toEndOf    ="parent"
+        style="@style/switch_style"
+    />
+
+    <com.example.reminder.view.LocationContextButton
+            android:id              ="@+id/selectable_location"
+            android:layout_width    ="match_parent"
+            android:layout_height   ="wrap_content"
+            android:layout_marginTop="10sp"
+            app:layout_constraintTop_toBottomOf ="@id/switch_place"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf    ="parent"
+            android:clickable                   ="true"
+            android:stateListAnimator           ="@animator/btn2"
+    />
+
+    <LinearLayout
+        android:id              ="@+id/liner_button"
+        android:layout_width    ="match_parent"
+        android:layout_height   ="wrap_content"
+        android:orientation     ="horizontal"
+        android:layout_marginBottom="10sp"
+        app:layout_constraintBottom_toBottomOf  ="parent"
+        app:layout_constraintStart_toStartOf    ="parent"
+        app:layout_constraintEnd_toEndOf        ="parent"
+    >
         <Button
             android:id="@+id/cancel"
             android:text="@string/button_cancel"
-            style="@style/button_style" />
+            android:stateListAnimator="@animator/btn"
+            style="@style/button_style"
+        />
 
         <Button
             android:id="@+id/save"
             android:text="@string/button_save"
-            style="@style/button_style" />
+            android:stateListAnimator="@animator/btn"
+            style="@style/button_style"
+        />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

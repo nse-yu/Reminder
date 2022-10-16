@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".menu.completed.CompletedActivity"
-    android:background="@color/black">
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:tools="http://schemas.android.com/tools"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+                                                   android:padding="10dp"
+                                                   tools:context=".menu.completed.CompletedActivity"
+                                                   android:background="@color/black"
+>
 
     <Button
         android:id="@+id/reminder_completed_list"
+        android:text="@string/tab_reminder"
+        android:padding="20sp"
+        app:backgroundTint="#1a1a1a"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/tab_reminder"
-        app:backgroundTint="#1a1a1a"
-        style="@style/button_completed_style" />
+        style="@style/button_completed_style"
+    />
+
     <Button
         android:id="@+id/todo_completed_list"
-        app:layout_constraintTop_toBottomOf="@id/reminder_completed_list"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="20sp"
         android:text="@string/account_ToDo_title"
         app:backgroundTint="#1a1a1a"
-        style="@style/button_completed_style" />
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/reminder_completed_list"
+        style="@style/button_completed_style"
+    />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

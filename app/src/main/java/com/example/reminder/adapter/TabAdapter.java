@@ -5,14 +5,13 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
-
 import com.example.reminder.fragment.AllFragment;
 import com.example.reminder.fragment.ReminderFragment;
 import com.example.reminder.fragment.TodoFragment;
 
 public class TabAdapter extends FragmentStateAdapter {
-    private final int totalTabs;
-    private final MemoAdapter memoAdapter;
+    private final int           totalTabs;
+    private final MemoAdapter   memoAdapter;
 
     public TabAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, int totalTabs, MemoAdapter memoAdapter) {
         super(fragmentManager, lifecycle);
@@ -35,9 +34,10 @@ public class TabAdapter extends FragmentStateAdapter {
         if(position == 0)
             return new AllFragment(memoAdapter);
         else if(position == 1)
-            return new ReminderFragment();
-
-        return new TodoFragment();
+            return new ReminderFragment(memoAdapter);
+        else{
+            return new TodoFragment(memoAdapter);
+        }
     }
 
     /**Returns the total number of items in the data set held by the adapter.*/
@@ -45,4 +45,5 @@ public class TabAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return totalTabs;
     }
+
 }

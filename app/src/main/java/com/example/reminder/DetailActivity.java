@@ -7,28 +7,32 @@ import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.viewmodel.ViewModelInitializer;
 import com.example.reminder.background.QueryViewModel;
 import com.example.reminder.contracts.DetailContract;
+import com.example.reminder.database.room.LocationCodes;
 import com.example.reminder.database.room.Memo;
 import com.example.reminder.databinding.ActivityDetailBinding;
-import com.example.reminder.fragment.AllFragment;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener, DialogInterface.OnClickListener {
 
     //memo's contents id is essential to update specific memo
-    private String  memo_topic;
-    private String  memo_summary;
-    private int     memo_id;
-
+    private String  topic;
+    private String  summary;
+    private int     id;
+    private int     location;
+    private QueryViewModel queryViewModel;
     public  final   static String   EDIT_UPDATE     = "update";
 
     private final ActivityResultLauncher<String[]> launcher = registerForActivityResult(
             new DetailContract(),
             result -> {
-                QueryViewModel viewModel = MainActivity.getMemoViewModel();
 
-                Memo memo = new Memo(memo_id, result[0], result[1]);
-                viewModel.update(memo);
+                if(result.length == 3)
+                    queryViewModel.update(
+                            new Memo(id, result[0], result[1], Integer.parseInt(result[2]))
+                    );
 
                 //return to main activity
                 returnMain();
@@ -43,19 +47,33 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         ActivityDetailBinding binding = ActivityDetailBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        //initialize
-        memo_topic      = getIntent().getStringExtra(AllFragment.TOPIC_STRING);
-        memo_summary    = getIntent().getStringExtra(AllFragment.SUMMARY_STRING);
-        memo_id         = getIntent().getIntExtra(AllFragment.ID_INT,-1);
+        //[Intent]
+        topic   = getIntent().getStringExtra(MainActivity.TOPIC_STRING);
+        summary = getIntent().getStringExtra(MainActivity.SUMMARY_STRING);
+        id      = getIntent().getIntExtra(MainActivity.ID_INT,-1);
+        location= getIntent().getIntExtra(MainActivity.LOCATION_INT, 1);
 
-        //set text
-        binding.showTopic   .setText(memo_topic);
-        binding.showSummary .setText(memo_summary);
+        //[TextView]
+        binding.showTopic   .setText(topic);
+        binding.showSummary .setText(summary);
+        binding.selectableLocation.setLocation(LocationCodes.toString(this, location));
 
-        //listener
+        //[Button]
         binding.buttonEdit      .setOnClickListener(this);
         binding.buttonDelete    .setOnClickListener(this);
         binding.buttonComplete  .setOnClickListener(this);
+        binding.linerShow       .setOnClickListener(this);
+
+        //[QueryViewModel]
+        queryViewModel = new ViewModelProvider(
+                this,
+                ViewModelProvider.Factory.from(
+                        new ViewModelInitializer<>(
+                                QueryViewModel.class,
+                                creationExtras -> new QueryViewModel(getApplication())
+                        )
+                )
+        ).get(QueryViewModel.class);
     }
 
     //onclick for update one memo's contents
@@ -64,11 +82,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         final int id = view.getId();
 
-        if(id == R.id.button_edit) {
+        if(id == R.id.button_edit || id == R.id.liner_show) {
 
-            launcher.launch(new String[]{memo_topic, memo_summary});
-
-            //startActivityForResult(update_intent, REQUEST_UPDATE);
+            launcher.launch(new String[]{topic, summary, String.valueOf(location)});
 
         }else if(id == R.id.button_delete){
 
@@ -85,13 +101,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         }else if(id == R.id.button_complete){
 
-            QueryViewModel viewModel = MainActivity.getMemoViewModel();
-
-            //delete->同じMemoにcompleted属性をつけて再構成
-            Memo completed_memo = new Memo(memo_id, memo_topic, memo_summary);
-            viewModel.delete(completed_memo);
-            completed_memo.setCompleted(true);
-            viewModel.insert(completed_memo);
+            queryViewModel.toggleCompletedState(this.id, true);
 
             returnMain();
         }
@@ -100,21 +110,21 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     //onclick for alert and delete
     @Override
     public void onClick(DialogInterface dialogInterface, int i) {
-        if(i == DialogInterface.BUTTON_POSITIVE) {
-            //delete memo
-            QueryViewModel viewModel = MainActivity.getMemoViewModel();
-            Memo delete_memo = new Memo(memo_id, memo_topic, memo_summary);
-            viewModel.delete(delete_memo);
+        if(i != DialogInterface.BUTTON_POSITIVE) return;
 
-            //return to main activity
-            returnMain();
-        }
+        //delete a memo
+        queryViewModel.delete(
+                new Memo(id, topic, summary)
+        );
+
+        //return to main activity
+        returnMain();
     }
 
     public void returnMain(){
 
         //return to MainActivity
-        Intent return_intent = new Intent(this,MainActivity.class);
+        Intent return_intent = new Intent(this, MainActivity.class);
         startActivity(return_intent);
     }
 }

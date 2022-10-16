@@ -10,6 +10,7 @@
     <string name="menu_append">append</string>
     <string name="menu_search">search</string>
     <string name="menu_options">設定</string>
+    <string name="menu_delete">delete</string>
     <!-- Preference header -->
     <string name="account_header">クラウドアカウント</string>
     <string name="preset_header">プリセット</string>

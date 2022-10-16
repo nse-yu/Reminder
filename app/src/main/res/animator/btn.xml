@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <set>
+            <objectAnimator
+                    android:propertyName="alpha"
+                    android:valueType="floatType"
+                    android:valueTo="0.2"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+            <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueType="floatType"
+                    android:valueTo="1.2"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+            <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueType="floatType"
+                    android:valueTo="1.2"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+        </set>
+    </item>
+    <item android:state_pressed="false">
+        <set>
+            <objectAnimator
+                    android:propertyName="alpha"
+                    android:valueType="floatType"
+                    android:valueTo="1"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+            <objectAnimator
+                    android:propertyName="scaleX"
+                    android:valueType="floatType"
+                    android:valueTo="1"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+            <objectAnimator
+                    android:propertyName="scaleY"
+                    android:valueType="floatType"
+                    android:valueTo="1"
+                    android:duration="@integer/material_motion_duration_short_1"
+            />
+        </set>
+    </item>
+</selector>
